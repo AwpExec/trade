@@ -1,0 +1,116 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 200, 0, 50)
+mainFrame.Position = UDim2.new(0.1, 0, 0.2, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 8)
+uiCorner.Parent = mainFrame
+
+local title = Instance.new("TextLabel")
+title.Text = "TRADE SCAM"
+title.Size = UDim2.new(1, -20, 0, 30)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 14
+title.BackgroundTransparency = 1
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Font = Enum.Font.SourceSansBold
+title.Parent = mainFrame
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 20, 0, 20)
+toggleButton.Position = UDim2.new(1, -25, 0, 5)
+toggleButton.Text = "▼"
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.BackgroundTransparency = 1
+toggleButton.Parent = mainFrame
+
+local expandedFrame = Instance.new("Frame")
+expandedFrame.Size = UDim2.new(1, 0, 0, 100)
+expandedFrame.Position = UDim2.new(0, 0, 0, 40)
+expandedFrame.BackgroundTransparency = 1
+expandedFrame.Visible = false
+expandedFrame.Parent = mainFrame
+
+local uiCornerExpanded = Instance.new("UICorner")
+uiCornerExpanded.CornerRadius = UDim.new(0, 8)
+uiCornerExpanded.Parent = expandedFrame
+
+local userLabel = Instance.new("TextLabel")
+userLabel.Text = "User ="
+userLabel.Size = UDim2.new(0, 50, 0, 20)
+userLabel.Position = UDim2.new(0, 10, 0, 5)
+userLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+userLabel.BackgroundTransparency = 1
+userLabel.TextSize = 12
+userLabel.Font = Enum.Font.SourceSans
+userLabel.Parent = expandedFrame
+
+local userInput = Instance.new("TextBox")
+userInput.Size = UDim2.new(0, 100, 0, 20)
+userInput.Position = UDim2.new(0, 60, 0, 5)
+userInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+userInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+userInput.Text = "Type Here!"
+userInput.Font = Enum.Font.SourceSans
+userInput.TextSize = 12
+userInput.Parent = expandedFrame
+
+local uiCornerUser = Instance.new("UICorner")
+uiCornerUser.CornerRadius = UDim.new(0, 5)
+uiCornerUser.Parent = userInput
+
+local function createToggle(name, yOffset)
+    local label = Instance.new("TextLabel")
+    label.Text = name .. " ="
+    label.Size = UDim2.new(0, 100, 0, 20)
+    label.Position = UDim2.new(0, 10, 0, yOffset)
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.BackgroundTransparency = 1
+    label.TextSize = 12
+    label.Font = Enum.Font.SourceSans
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = expandedFrame
+
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(0, 30, 0, 20)
+    toggleButton.Position = UDim2.new(0, 120, 0, yOffset)
+    toggleButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    toggleButton.Text = "X"
+    toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggleButton.TextSize = 12
+    toggleButton.Font = Enum.Font.SourceSans
+    toggleButton.Parent = expandedFrame
+
+    local uiCornerToggle = Instance.new("UICorner")
+    uiCornerToggle.CornerRadius = UDim.new(0, 5)
+    uiCornerToggle.Parent = toggleButton
+
+    local enabled = false
+    toggleButton.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        toggleButton.Text = enabled and "✓" or "X"
+    end)
+end
+
+createToggle("Freeze Trade", 30)
+createToggle("Auto Accept", 55)
+
+local expanded = false
+toggleButton.MouseButton1Click:Connect(function()
+    expanded = not expanded
+    expandedFrame.Visible = expanded
+    mainFrame.Size = expanded and UDim2.new(0, 200, 0, 150) or UDim2.new(0, 200, 0, 50)
+    toggleButton.Text = expanded and "▲" or "▼"
+end)
